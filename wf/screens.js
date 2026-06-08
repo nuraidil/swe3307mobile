@@ -176,7 +176,6 @@ function renderP1(){
   const active = activeBookings();
   const stats = [
     ["Active Bookings", String(active.length), "Currently held"],
-    ["Hours Booked",    hoursBooked()+"h",      "Active total"],
     ["Rooms Used",      String(usedRoomsCount()), "All time"],
   ];
   const activeList = active.length ? active.map(b=>`
@@ -229,19 +228,9 @@ function renderP1(){
         <div class="head"><span class="b7 t15">Active Bookings</span><span class="tag solid">${active.length}</span></div>
         <div>${activeList}</div>
       </div>
-      <div class="dash-bottom">
-        <div class="uicard">
-          <div class="head"><span class="b7 t14">Recent Activity</span></div>
-          <div>${activity}</div>
-        </div>
-        <div class="uicard" style="background:var(--fill);border-color:var(--line-2);display:flex;flex-direction:column;justify-content:space-between;padding:22px;">
-          <div class="col gap8">
-            <span class="label-kicker">Quick Access</span>
-            <span class="b8 t18">Need a room right now?</span>
-            <span class="t13 muted">Our smart engine matches you to the best available space in seconds.</span>
-          </div>
-          <button class="btn primary mt16" style="width:fit-content;" data-act="goto" data-target="recommend">+ &nbsp;Create New Booking</button>
-        </div>
+      <div class="uicard">
+        <div class="head"><span class="b7 t14">Recent Activity</span></div>
+        <div>${activity}</div>
       </div>
     </div>`);
 }
@@ -489,6 +478,7 @@ function renderP4(){
    ============================================================ */
 function renderMyBookings(){
   const active  = activeBookings();
+  const pending = pendingBookings();
   const history = historyBookings();
   const bookingRow = (b, isActive)=>`
     <div class="lrow">
@@ -507,10 +497,29 @@ function renderMyBookings(){
       </div>`:''}
     </div>`;
 
+  const pendingRow = (b)=>`
+    <div class="lrow">
+      <div class="stripe" style="background:var(--line-2);"></div>
+      <div class="col gap6" style="flex:1;min-width:0;">
+        <div class="row gap8 wrap"><span class="b7 t14">${b.roomName}</span><span class="tag solid">${b.event}</span>${statusTag(b.state)}</div>
+        <div class="row gap12 wrap muted mono t12">
+          <span>▦ ${dateLabel(b.day)}</span><span>◷ ${fmtT(b.start)} – ${fmtT(b.end)}</span><span>⌂ ${b.floor}</span>
+          ${Object.keys(b.addons||{}).length?`<span>✦ ${Object.keys(b.addons).length} add-on${Object.keys(b.addons).length>1?'s':''}</span>`:''}
+        </div>
+        <span class="t11 muted">Awaiting admin approval</span>
+      </div>
+      <span class="t11 muted mono">${b.id}</span>
+      <button class="btn sm" data-act="cancelBk" data-v="${b.id}">✕ Cancel</button>
+    </div>`;
+
   const empty = WF.session.bookings.length===0;
   const inner = empty
     ? `<div class="scrollpad">${emptyBox('◷','No bookings yet','You have not reserved any venues yet. Start a booking and it will appear here.','+ Create New Booking','recommend')}</div>`
     : `<div class="scrollpad">
+        <div class="uicard">
+          <div class="head"><span class="b7 t15">Pending</span><span class="tag solid">${pending.length}</span></div>
+          <div>${pending.length?pending.map(b=>pendingRow(b)).join(''):'<div class="lrow muted t12" style="justify-content:center;padding:22px;">No pending bookings.</div>'}</div>
+        </div>
         <div class="uicard">
           <div class="head"><span class="b7 t15">Active</span><span class="tag solid">${active.length}</span></div>
           <div>${active.length?active.map(b=>bookingRow(b,true)).join(''):'<div class="lrow muted t12" style="justify-content:center;padding:22px;">No active bookings.</div>'}</div>
