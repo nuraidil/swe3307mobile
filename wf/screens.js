@@ -229,9 +229,9 @@ function renderP1(){
         <div>${activeList}</div>
       </div>
       <div class="uicard">
-          <div class="head"><span class="b7 t14">Recent Activity</span></div>
-          <div>${activity}</div>
-        </div>
+        <div class="head"><span class="b7 t14">Recent Activity</span></div>
+        <div>${activity}</div>
+      </div>
     </div>`);
 }
 
@@ -499,7 +499,7 @@ function renderMyBookings(){
 
   const pendingRow = (b)=>`
     <div class="lrow">
-      <div class="stripe" style="background:#c8a800;opacity:0.5;"></div>
+      <div class="stripe" style="background:#b8860b;opacity:0.6;"></div>
       <div class="col gap6" style="flex:1;min-width:0;">
         <div class="row gap8 wrap"><span class="b7 t14">${b.roomName}</span><span class="tag solid">${b.event}</span>${statusTag(b.state)}</div>
         <div class="row gap12 wrap muted mono t12">
@@ -518,15 +518,15 @@ function renderMyBookings(){
     : `<div class="scrollpad">
         <div class="uicard">
           <div class="head"><span class="b7 t15">Pending</span><span class="tag solid">${pending.length}</span></div>
-          <div>${pending.length?pending.map(b=>pendingRow(b)).join(''):'<div class="lrow muted t12" style="justify-content:center;padding:22px;">No pending bookings.</div>'}</div>
+          <div>${pending.length?pending.map(b=>pendingRow(b)).join(''):('<div class="lrow muted t12" style="justify-content:center;padding:22px;">No pending bookings.</div>')}</div>
         </div>
         <div class="uicard">
           <div class="head"><span class="b7 t15">Active</span><span class="tag solid">${active.length}</span></div>
-          <div>${active.length?active.map(b=>bookingRow(b,true)).join(''):'<div class="lrow muted t12" style="justify-content:center;padding:22px;">No active bookings.</div>'}</div>
+          <div>${active.length?active.map(b=>bookingRow(b,true)).join(''):('<div class="lrow muted t12" style="justify-content:center;padding:22px;">No active bookings.</div>')}</div>
         </div>
         <div class="uicard">
           <div class="head"><span class="b7 t15">History</span><span class="tag">${history.length}</span></div>
-          <div>${history.length?history.map(b=>bookingRow(b,false)).join(''):'<div class="lrow muted t12" style="justify-content:center;padding:22px;">No past bookings.</div>'}</div>
+          <div>${history.length?history.map(b=>bookingRow(b,false)).join(''):('<div class="lrow muted t12" style="justify-content:center;padding:22px;">No past bookings.</div>')}</div>
         </div>
       </div>`;
 
