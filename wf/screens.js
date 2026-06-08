@@ -229,9 +229,9 @@ function renderP1(){
         <div>${activeList}</div>
       </div>
       <div class="uicard">
-        <div class="head"><span class="b7 t14">Recent Activity</span></div>
-        <div>${activity}</div>
-      </div>
+          <div class="head"><span class="b7 t14">Recent Activity</span></div>
+          <div>${activity}</div>
+        </div>
     </div>`);
 }
 
@@ -499,14 +499,14 @@ function renderMyBookings(){
 
   const pendingRow = (b)=>`
     <div class="lrow">
-      <div class="stripe" style="background:var(--line-2);"></div>
+      <div class="stripe" style="background:#c8a800;opacity:0.5;"></div>
       <div class="col gap6" style="flex:1;min-width:0;">
         <div class="row gap8 wrap"><span class="b7 t14">${b.roomName}</span><span class="tag solid">${b.event}</span>${statusTag(b.state)}</div>
         <div class="row gap12 wrap muted mono t12">
           <span>▦ ${dateLabel(b.day)}</span><span>◷ ${fmtT(b.start)} – ${fmtT(b.end)}</span><span>⌂ ${b.floor}</span>
           ${Object.keys(b.addons||{}).length?`<span>✦ ${Object.keys(b.addons).length} add-on${Object.keys(b.addons).length>1?'s':''}</span>`:''}
         </div>
-        <span class="t11 muted">Awaiting admin approval</span>
+        <span class="t11 muted mono">⏳ Awaiting admin approval</span>
       </div>
       <span class="t11 muted mono">${b.id}</span>
       <button class="btn sm" data-act="cancelBk" data-v="${b.id}">✕ Cancel</button>
