@@ -247,13 +247,13 @@ document.addEventListener('click', (e)=>{
     const icon = thumb.querySelector('.swipe-thumb-icon');
     if(p > 0.5){
       const r = (p - 0.5) / 0.5;
-      fill.style.cssText = `background:rgba(34,197,94,${0.15+r*0.45});width:${p*100}%;left:0;`;
-      thumb.style.background = `rgba(34,197,94,${0.5+r*0.5})`;
+      fill.style.cssText = `background:rgba(80,80,80,${0.15+r*0.45});width:${p*100}%;left:0;`;
+      thumb.style.background = `rgba(44,44,44,${0.5+r*0.5})`;
       icon.textContent = p >= APPROVE_ZONE ? '✓' : '→';
     } else if(p < 0.5){
       const r = (0.5 - p) / 0.5;
-      fill.style.cssText = `background:rgba(239,68,68,${0.15+r*0.45});width:${(1-p)*100}%;left:${p*100}%;`;
-      thumb.style.background = `rgba(239,68,68,${0.5+r*0.5})`;
+      fill.style.cssText = `background:rgba(120,120,120,${0.15+r*0.45});width:${(1-p)*100}%;left:${p*100}%;`;
+      thumb.style.background = `rgba(80,80,80,${0.5+r*0.5})`;
       icon.textContent = p <= DECLINE_ZONE ? '✕' : '←';
     } else {
       fill.style.cssText = 'background:transparent;width:0;';
