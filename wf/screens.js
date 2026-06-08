@@ -369,7 +369,6 @@ function renderP3(){
           <div class="uicard">
             <div class="head"><span class="label-kicker">Event Details</span></div>
             <div style="padding:16px;" class="col gap12">
-              <div class="field area ph-only" style="height:74px;padding-top:11px;">Describe the purpose or agenda of your event…</div>
               <label class="row gap10" data-act="p3email" style="cursor:pointer;"><span class="switch ${s.email?'on':''}"><span class="nub"></span></span><span class="t13">✉ Send automated email reminder notification</span></label>
             </div>
           </div>
@@ -384,8 +383,6 @@ function renderP3(){
               <div class="col gap4"><span class="label-kicker">Time</span><span class="mono b6 t14">${fmtT(s.start)} – ${fmtT(s.end)}</span></div>
               ${Object.keys(sel).length?`<div class="divline"></div><div class="col gap6"><span class="label-kicker">Add-Ons</span>${Object.entries(sel).map(([id,q])=>{const a=ADDONS.find(x=>x[0]===id);return `<div class="row between"><span class="t12">${ico('','sm')} ${a[1]}</span><span class="tag">×${q}</span></div>`;}).join('')}</div>`:''}
               ${s.email?`<div class="row gap8" style="padding:9px 11px;border-radius:8px;background:var(--fill);"><span class="t11 mono">✉ Email reminder active</span></div>`:''}
-              <div class="divline"></div>
-              <div class="row gap8" style="padding:10px 12px;border-radius:8px;border:1px dashed var(--line-2);background:var(--paper);"><span class="t11 muted">⚠ Bookings must be cancelled 2 hours prior to avoid penalties.</span></div>
               ${WF.p3.conflictError ? `<div class="row gap8" style="padding:10px 12px;border-radius:8px;border:1px solid #888;background:var(--fill);"><span class="t11" style="color:#2c2c2c;">✕ ${WF.p3.conflictError}</span></div>` : ""}
               <button class="btn primary block" data-act="confirm" style="padding:12px;">✓ &nbsp;Confirm Reservation</button>
             </div>
