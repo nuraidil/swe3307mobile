@@ -158,13 +158,13 @@ document.addEventListener('click', (e)=>{
     case 'adminCancel': goto(WF.adminReturn || 'dashboard'); break;
 
     // P2 filters
-    case 'selectRoom': WF.selectedRoom = t.dataset.room; goto('summary'); break;
+    case 'selectRoom': WF.selectedRoom = t.dataset.room; WF.p3.conflictError = null; goto('summary'); break;
     case 'p2event': toggleArr(WF.p2.events, v); render(); break;
     case 'p2fac': toggleArr(WF.p2.facilities, v); render(); break;
     case 'p2floor': WF.p2.floor = v; render(); break;
 
     // P3 config
-    case 'p3day': WF.p3.day = v; render(); break;
+    case 'p3day': WF.p3.day = v; WF.p3.conflictError = null; render(); break;
     case 'p3addon': {
       if(e.target.closest('[data-noclick]')) break;
       if(WF.p3.addons[v]!==undefined) delete WF.p3.addons[v]; else WF.p3.addons[v]=1;
@@ -180,6 +180,19 @@ document.addEventListener('click', (e)=>{
       const room = (window.ROOMS||[]).find(r=>r.name===WF.selectedRoom) || window.ROOMS[0];
       let { day, start, end } = WF.p3;
       if(end <= start){ const i=TIME_OPTS.indexOf(start); end = TIME_OPTS[Math.min(i+2,TIME_OPTS.length-1)]; }
+      // Conflict check: block if room has an active or pending booking overlapping this slot
+      const conflict = WF.session.bookings.find(b=>
+        b.roomName === room.name &&
+        b.day === day &&
+        (b.state === 'active' || b.state === 'pending') &&
+        b.start < end && b.end > start
+      );
+      if(conflict){
+        WF.p3.conflictError = `${room.name} is already booked from ${fmtT(conflict.start)}–${fmtT(conflict.end)} on ${dateLabel(day)}. Choose a different time or room.`;
+        render();
+        break;
+      }
+      WF.p3.conflictError = null;
       createBooking({ roomName:room.name, floor:room.floor, cap:room.cap, event:room.event, day, start, end, addons:{...WF.p3.addons} });
       WF.p3.addons = {};
       goto('dashboard');
@@ -313,8 +326,8 @@ document.addEventListener('change', (e)=>{
   if(!sel) return;
   const key = sel.dataset.change;
   if(key==='p2cap'){ WF.p2.cap = Number(sel.value); render(); }
-  if(key==='p3start'){ WF.p3.start = sel.value; if(WF.p3.end<=WF.p3.start){ const i=TIME_OPTS.indexOf(WF.p3.start); WF.p3.end=TIME_OPTS[Math.min(i+1,TIME_OPTS.length-1)]; } render(); }
-  if(key==='p3end'){ WF.p3.end = sel.value; render(); }
+  if(key==='p3start'){ WF.p3.start = sel.value; WF.p3.conflictError = null; if(WF.p3.end<=WF.p3.start){ const i=TIME_OPTS.indexOf(WF.p3.start); WF.p3.end=TIME_OPTS[Math.min(i+1,TIME_OPTS.length-1)]; } render(); }
+  if(key==='p3end'){ WF.p3.end = sel.value; WF.p3.conflictError = null; render(); }
 });
 
 /* keyboard nav (main flow only) */
