@@ -134,14 +134,9 @@ document.addEventListener('click', (e)=>{
   const chrome = e.target.closest('[data-chrome]');
   if(chrome){
     const a = chrome.dataset.chrome;
-    if(a==='prev'){ const i=ORDER.indexOf(WF.screen); goto(i<=0?ORDER[0]:ORDER[i-1]); }
-    if(a==='next'){ const i=ORDER.indexOf(WF.screen); goto(i<0?ORDER[0]:ORDER[Math.min(ORDER.length-1,i+1)]); }
     if(a==='time'){ WF.is24h = chrome.dataset.chromeTime==='24'; render(); }
     return;
   }
-  const node = e.target.closest('.flowmap .node');
-  if(node){ goto(node.dataset.node); return; }
-
   const t = e.target.closest('[data-act]');
   if(!t) return;
   const act = t.dataset.act;
@@ -330,12 +325,6 @@ document.addEventListener('change', (e)=>{
   if(key==='p3end'){ WF.p3.end = sel.value; WF.p3.conflictError = null; render(); }
 });
 
-/* keyboard nav (main flow only) */
-document.addEventListener('keydown',(e)=>{
-  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT') return;
-  const i=ORDER.indexOf(WF.screen);
-  if(e.key==='ArrowRight' && i>=0){ goto(ORDER[Math.min(ORDER.length-1,i+1)]); }
-  if(e.key==='ArrowLeft' && i>=0){ goto(ORDER[Math.max(0,i-1)]); }
-});
+/* keyboard arrow nav removed */
 
 render();
